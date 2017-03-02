@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="skplayer">
+    <file>Resources/pause_703px_1194928_easyicon.net.png</file>
+    <file>Resources/Folder_open_246px_1198271_easyicon.net.png</file>
+    <file>Resources/play_128px_1194928_easyicon.net.ico</file>
+    <file>Resources/play_703px_1194928_easyicon.net.png</file>
+  </qresource>
+</RCC>
