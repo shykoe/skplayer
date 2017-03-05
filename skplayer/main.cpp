@@ -3,6 +3,7 @@
 #include "sffmpeg.h"
 #include <qaudiooutput.h>
 #include <QtWidgets/QWidget>
+#include "caffeui.hpp"
 int main(int argc, char *argv[])
 {
 	//QAudioOutput *out;
@@ -18,8 +19,10 @@ int main(int argc, char *argv[])
 	
 	
 	QApplication a(argc, argv);
-	skplayer w;
-	w.show();
-	printf("%s",sffmpeg::Get()->GetError().c_str());
+	//skplayer w;
+	//w.show();
+	caffeui s;
+	s.show();
+	//printf("%s",sffmpeg::Get()->GetError().c_str());
 	return a.exec();
 }

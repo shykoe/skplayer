@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>caffeui</class>
+ <widget class="QWidget" name="caffeui">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>554</width>
+    <height>866</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>caffeui</string>
+  </property>
+  <widget class="QLineEdit" name="ModelEdit">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>401</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="ProtoEdit">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>40</y>
+     <width>401</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="MeanEdit">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>70</y>
+     <width>401</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="ModelButton">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>10</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Model文件</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="ProtoButton">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>40</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Proto文件</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="MeanButton">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>70</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Mean文件</string>
+   </property>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>ModelButton</sender>
+   <signal>clicked()</signal>
+   <receiver>caffeui</receiver>
+   <slot>SetModelFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>481</x>
+     <y>17</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>432</x>
+     <y>-31</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ProtoButton</sender>
+   <signal>clicked()</signal>
+   <receiver>caffeui</receiver>
+   <slot>SetProtoFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>513</x>
+     <y>53</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>716</x>
+     <y>61</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>MeanButton</sender>
+   <signal>clicked()</signal>
+   <receiver>caffeui</receiver>
+   <slot>SetMeanFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>513</x>
+     <y>85</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>585</x>
+     <y>85</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>SetMeanFile()</slot>
+  <slot>SetProtoFile()</slot>
+  <slot>SetModelFile()</slot>
+ </slots>
+</ui>
