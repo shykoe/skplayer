@@ -16,6 +16,7 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QTableView>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -29,6 +30,7 @@ public:
     QPushButton *ModelButton;
     QPushButton *ProtoButton;
     QPushButton *MeanButton;
+    QTableView *Seginfo;
 
     void setupUi(QWidget *caffeui)
     {
@@ -53,6 +55,9 @@ public:
         MeanButton = new QPushButton(caffeui);
         MeanButton->setObjectName(QStringLiteral("MeanButton"));
         MeanButton->setGeometry(QRect(440, 70, 81, 21));
+        Seginfo = new QTableView(caffeui);
+        Seginfo->setObjectName(QStringLiteral("Seginfo"));
+        Seginfo->setGeometry(QRect(10, 410, 531, 451));
 
         retranslateUi(caffeui);
         QObject::connect(ModelButton, SIGNAL(clicked()), caffeui, SLOT(SetModelFile()));

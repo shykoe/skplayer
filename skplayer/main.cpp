@@ -4,6 +4,7 @@
 #include <qaudiooutput.h>
 #include <QtWidgets/QWidget>
 #include "caffeui.hpp"
+#include<qstring.h>
 int main(int argc, char *argv[])
 {
 	//QAudioOutput *out;
@@ -23,6 +24,11 @@ int main(int argc, char *argv[])
 	//w.show();
 	caffeui s;
 	s.show();
+	/*QString test("11:212");
+	if (test.contains(QRegularExpression("^\\d+:\\d{0,2}$")))
+	{
+		printf("ok");
+	}*/
 	//printf("%s",sffmpeg::Get()->GetError().c_str());
 	return a.exec();
 }
