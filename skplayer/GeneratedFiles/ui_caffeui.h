@@ -17,6 +17,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QTableView>
+#include <QtWidgets/QTextEdit>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -31,6 +32,9 @@ public:
     QPushButton *ProtoButton;
     QPushButton *MeanButton;
     QTableView *Seginfo;
+    QTextEdit *LogText;
+    QLineEdit *OutputDirEdit;
+    QPushButton *OutputDir;
 
     void setupUi(QWidget *caffeui)
     {
@@ -58,11 +62,21 @@ public:
         Seginfo = new QTableView(caffeui);
         Seginfo->setObjectName(QStringLiteral("Seginfo"));
         Seginfo->setGeometry(QRect(10, 410, 531, 451));
+        LogText = new QTextEdit(caffeui);
+        LogText->setObjectName(QStringLiteral("LogText"));
+        LogText->setGeometry(QRect(10, 220, 531, 181));
+        OutputDirEdit = new QLineEdit(caffeui);
+        OutputDirEdit->setObjectName(QStringLiteral("OutputDirEdit"));
+        OutputDirEdit->setGeometry(QRect(10, 100, 401, 21));
+        OutputDir = new QPushButton(caffeui);
+        OutputDir->setObjectName(QStringLiteral("OutputDir"));
+        OutputDir->setGeometry(QRect(440, 100, 81, 21));
 
         retranslateUi(caffeui);
         QObject::connect(ModelButton, SIGNAL(clicked()), caffeui, SLOT(SetModelFile()));
         QObject::connect(ProtoButton, SIGNAL(clicked()), caffeui, SLOT(SetProtoFile()));
         QObject::connect(MeanButton, SIGNAL(clicked()), caffeui, SLOT(SetMeanFile()));
+        QObject::connect(OutputDir, SIGNAL(clicked()), caffeui, SLOT(SetOutputFile()));
 
         QMetaObject::connectSlotsByName(caffeui);
     } // setupUi
@@ -73,6 +87,7 @@ public:
         ModelButton->setText(QApplication::translate("caffeui", "Model\346\226\207\344\273\266", Q_NULLPTR));
         ProtoButton->setText(QApplication::translate("caffeui", "Proto\346\226\207\344\273\266", Q_NULLPTR));
         MeanButton->setText(QApplication::translate("caffeui", "Mean\346\226\207\344\273\266", Q_NULLPTR));
+        OutputDir->setText(QApplication::translate("caffeui", "\345\255\230\346\224\276\344\275\215\347\275\256", Q_NULLPTR));
     } // retranslateUi
 
 };

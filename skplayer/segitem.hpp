@@ -8,10 +8,10 @@
 typedef struct segmentation
 {
 	segmentation(int id, int stime, int endtime, int duration, QString name);
-	int id;
-	int StartTime;
-	int EndTime;
-	int Duration;
+	unsigned int id;
+	unsigned int StartTime;
+	unsigned int EndTime;
+	unsigned int Duration;
 	QString name;
 }segmentation;
 class segitem : public QObject {

@@ -7,11 +7,13 @@ class caffeui : public QWidget {
 
 public:
 	caffeui(QWidget * parent = Q_NULLPTR);
+	void timerEvent(QTimerEvent *e);
 	~caffeui();
 public slots:
 	void SetModelFile();
 	void SetMeanFile();
 	void SetProtoFile();
+	void SetOutputFile();
 private slots:
 	void contextMenu(const QPoint &pos);
 private:

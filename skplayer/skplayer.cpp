@@ -3,6 +3,7 @@
 #include "sffmpeg.h"
 #include "sAudioPlay.h"
 #include <qmessagebox.h>
+#include <SplitVideo.h>
 #define PAUSESTYLE "QPushButton{border-image: url(:/skplayer/Resources/pause_703px_1194928_easyicon.net.png);}"
 #define PLAYSTYLE "QPushButton{border-image: url(:/skplayer/Resources/play_703px_1194928_easyicon.net.png);}"
 static bool ispressSlider = false;
@@ -22,6 +23,7 @@ void skplayer::openFile(QString name)
 		return;
 	this->setWindowTitle(name);
 	int totalMs = sffmpeg::Get()->Open(name.toLocal8Bit());
+	SplitVideo::Get()->OpenSource(name.toStdString());
 	if (totalMs <= 0)
 	{
 		QMessageBox::information(this, "err", "file open failed!");

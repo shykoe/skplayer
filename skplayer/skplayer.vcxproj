@@ -188,6 +188,8 @@
     <ClCompile Include="segtablemodel.cpp" />
     <ClCompile Include="sffmpeg.cpp" />
     <ClCompile Include="skplayer.cpp" />
+    <ClCompile Include="SplitThread.cpp" />
+    <ClCompile Include="SplitVideo.cpp" />
     <ClCompile Include="sSlider.cpp" />
     <ClCompile Include="VideoThread.cpp" />
     <ClCompile Include="VideoWidget.cpp" />
@@ -293,6 +295,8 @@
     </CustomBuild>
     <ClInclude Include="sffmpeg.h" />
     <CustomBuild Include="sSlider.h" />
+    <ClInclude Include="SplitThread.h" />
+    <ClInclude Include="SplitVideo.h" />
     <ClInclude Include="VideoThread.h" />
     <ClInclude Include="VideoWidget.h" />
   </ItemGroup>

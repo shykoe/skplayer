@@ -2,6 +2,7 @@
 #include "qfiledialog.h"
 #include "qstring.h"
 #include "qtableview.h"
+#include "SplitVideo.h"
 #include <QMenu>
 caffeui::caffeui(QWidget * parent) : QWidget(parent) {
 	ui.setupUi(this);
@@ -10,6 +11,7 @@ caffeui::caffeui(QWidget * parent) : QWidget(parent) {
 	ui.Seginfo->setModel(_model);
 	ui.Seginfo->setSelectionBehavior(QAbstractItemView::SelectRows);
 	ui.Seginfo->setContextMenuPolicy(Qt::CustomContextMenu);
+	ui.LogText->setReadOnly(true);
 	connect(ui.Seginfo, SIGNAL(customContextMenuRequested(const QPoint)), this, SLOT(contextMenu(const QPoint)));
 	segmentation *test = new segmentation(1, 11, 2, 33, tr("test.mp4"));
 	segmentation *test2 = new segmentation(1, 11, 2, 33, tr("test.mp4"));
@@ -17,6 +19,7 @@ caffeui::caffeui(QWidget * parent) : QWidget(parent) {
 	_model->appendItem(test);
 	_model->appendItem(test2);
 	_model->appendItem(test3);
+	startTimer(40);
 	
 }
 void caffeui::contextMenu(const QPoint &pos)
@@ -51,6 +54,21 @@ void caffeui::SetMeanFile()
 		this, QString::fromLocal8Bit("选择mean文件"));
 	printf("%s", name.toStdString().c_str());
 	ui.MeanEdit->setText(name);
+}
+void caffeui::SetOutputFile()
+{
+	QString name = QFileDialog::getExistingDirectory(
+		this, QString::fromLocal8Bit("选择存放位置")
+	);
+	printf("%s", name.toStdString().c_str());
+	ui.OutputDirEdit->setText(name);
+}
+void caffeui::timerEvent(QTimerEvent * e)
+{
+	if (SplitVideo::Get()->bufsize > 0)
+	{
+		ui.LogText->setText(SplitVideo::Get()->getbuf());
+	}
 }
 caffeui::~caffeui() {
 	

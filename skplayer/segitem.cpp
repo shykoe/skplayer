@@ -13,11 +13,11 @@ QString int2time(int sec)
 {
 	return QString("%1:%2").arg(sec / 60).arg(sec % 60, 2 ,10, QLatin1Char('0'));
 }
-int time2int(QString time)
+unsigned int time2int(QString time)
 {
 	if (time.contains(QRegExp("^\\d+:\\d{0,2}$")))
 	{
-		return time.section(':', 0, 0).toInt() * 60 + time.section(':', 1, 1).toInt();
+		return time.section(':', 0, 0).toUInt() * 60 + time.section(':', 1, 1).toUInt();
 	}
 	return 0;
 }
@@ -58,7 +58,7 @@ void segitem::setData(int column, QVariant value)
 	switch (column)
 	{
 	case 0:
-		_seg->id = value.toInt();
+		_seg->id = value.toUInt();
 		return;
 	case 1:
 		_seg->StartTime = time2int(value.toString());

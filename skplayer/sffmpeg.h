@@ -48,6 +48,8 @@ public:
 	int sampleRate = 48000;
 	int sampleSize = 16;
 	int channel = 2;
+	//inline AVFormatContext* getic() {return ic; };
+	inline std::string GetFileName() { if (ic) return ic->filename; }
 protected:
 	char errorbuf[1024] = { 0 };
 	AVFrame* yuv = NULL;

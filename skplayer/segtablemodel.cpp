@@ -66,6 +66,7 @@ std::shared_ptr<segitem> SegTableModel::getItem(const int & row) const
 
 bool SegTableModel::appendItem(segmentation * seg, const QModelIndex & parent)
 {
+	seg->id = _items.count();
 	std::shared_ptr<segitem> newItem = std::make_shared<segitem>(seg, this);
 	beginInsertRows(parent, _items.count(), _items.count() + 1);
 	_items.append(newItem);

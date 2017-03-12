@@ -92,6 +92,39 @@
     </rect>
    </property>
   </widget>
+  <widget class="QTextEdit" name="LogText">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>220</y>
+     <width>531</width>
+     <height>181</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="OutputDirEdit">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>100</y>
+     <width>401</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="OutputDir">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>100</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>存放位置</string>
+   </property>
+  </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
@@ -144,10 +177,27 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>OutputDir</sender>
+   <signal>clicked()</signal>
+   <receiver>caffeui</receiver>
+   <slot>SetOutputFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>492</x>
+     <y>111</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>626</x>
+     <y>115</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>SetMeanFile()</slot>
   <slot>SetProtoFile()</slot>
   <slot>SetModelFile()</slot>
+  <slot>SetOutputFile()</slot>
  </slots>
 </ui>
