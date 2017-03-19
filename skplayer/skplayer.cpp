@@ -15,6 +15,7 @@ skplayer::skplayer(QWidget *parent)
 	ui.setupUi(this);
 	setMaximumSize(1366, 768);
 	startTimer(40);
+	setAttribute(Qt::WA_DeleteOnClose,true);
 
 }
 void skplayer::openFile(QString name)
@@ -23,7 +24,10 @@ void skplayer::openFile(QString name)
 		return;
 	this->setWindowTitle(name);
 	int totalMs = sffmpeg::Get()->Open(name.toLocal8Bit());
-	SplitVideo::Get()->OpenSource(name.toStdString());
+	if (!SplitVideo::Get()->isopen)
+	{
+		SplitVideo::Get()->OpenSource(name.toStdString());
+	}
 	if (totalMs <= 0)
 	{
 		QMessageBox::information(this, "err", "file open failed!");
@@ -50,7 +54,13 @@ void skplayer::open()
 
 skplayer::~skplayer()
 {
-
+	//isplay = false;
+	printf("close");
+	sffmpeg::Get()->isplay = false;
+	sffmpeg::Get()->Close();
+	//sffmpeg::Get()->isplay = false;
+	//sffmpeg::Get()->Close();
+	//sAudioPlay::Get()->Stop();
 }
 
 void skplayer::timerEvent(QTimerEvent * e)

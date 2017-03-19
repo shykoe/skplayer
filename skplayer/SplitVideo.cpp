@@ -5,11 +5,19 @@
 #pragma comment(lib, "avcodec.lib")
 #pragma comment(lib, "avdevice.lib")
 #pragma comment(lib, "avfilter.lib")
+#pragma comment(lib, "postproc.lib  ")
+#pragma comment(lib, "swresample.lib")
+#pragma comment(lib, "swscale.lib   ")
+#pragma comment(lib, "opencv_highgui310d.lib")
+#pragma comment(lib, "opencv_core310d.lib")
+#pragma comment(lib,"opencv_imgproc310d.lib")
+#pragma comment(lib,"opencv_imgcodecs310d.lib")
 float r2d(AVRational r)
 {
 	return r.num == 0 || r.den == 0 ? 0. : (float)r.num / (float)r.den;
 }
 SplitVideo::SplitVideo()
+	:isopen(false),readysp(true)
 {
 	buf = new char[4096];
 	bufsize = 0;
@@ -54,31 +62,129 @@ bool SplitVideo::writeVideoHeader(AVFormatContext * ifmt_ctx, AVFormatContext * 
 }
 
 
-bool SplitVideo::OpenSource(std::string filepath,bool reload)
+bool SplitVideo::init()
+{
+	QMutexLocker locker(&mutex);
+	readysp = false;
+	//opendecodec
+	if (codePar == NULL)
+		return false;
+	codec = avcodec_find_decoder(codePar->codec_id);
+	if (codec == NULL)
+	{
+		return false;
+	}
+	codeCtx = avcodec_alloc_context3(codec);
+	if (codeCtx == NULL)
+	{
+		return false;
+	}
+	if (avcodec_parameters_to_context(codeCtx, codePar) < 0)
+	{
+		return false;
+	}
+	if (avcodec_open2(codeCtx, codec, NULL) < 0)
+	{
+		return false;
+	}
+	int psize = codePar->width* codePar->height;
+	packet = (AVPacket*)malloc(sizeof(AVPacket));
+	if (av_new_packet(packet, psize) != 0)
+	{
+		return false;
+	}
+
+	
+	return true;
+}
+
+bool SplitVideo::read()
+{
+	QMutexLocker locker(&mutex);
+	
+	if (av_read_frame(ifmtCtx, packet) < 0)
+		return false;
+	return true;
+}
+
+cv::Mat SplitVideo::decode(int width, int height, int step)
+{
+	QMutexLocker locker(&mutex);
+	if (frame == NULL)
+	{
+		frame = av_frame_alloc();
+	}
+	if (packet->stream_index == video_index)
+	{
+		framenum++;
+		if (avcodec_send_packet(codeCtx, packet) != 0)
+		{
+			return  cv::Mat();
+		}
+		if (avcodec_receive_frame(codeCtx, frame) != 0)
+		{
+			return  cv::Mat();
+		}
+
+		if (step)
+		{
+			
+		}
+
+		int pts = frame->pts *  r2d(ifmtCtx->streams[video_index]->time_base);
+		printf("time-%d-%d\n", pts / 60, pts % 60);
+		//height = (codeCtx->height * width / codeCtx->width);
+		img_convert_ctx = sws_getCachedContext(img_convert_ctx, codeCtx->width, codeCtx->height, codeCtx->pix_fmt, width, height, AV_PIX_FMT_BGR24, SWS_BICUBIC, NULL, NULL, NULL);
+		if (img_convert_ctx == NULL) 
+		{
+			return cv::Mat();
+		}
+		//uint8_t* out_bufferBRG = new uint8_t[av_image_get_buffer_size(AV_PIX_FMT_BGR24, width, height, 1)]();
+		uint8_t *data[AV_NUM_DATA_POINTERS] = { 0 };
+		int linesize[AV_NUM_DATA_POINTERS] = { 0 };
+		
+		linesize[0] = width * 3;
+		IplImage* PcvFrame = cvCreateImage(cvSize(width, height), 8, 3);
+		data[0] = (uint8_t*)PcvFrame->imageData;
+		sws_scale(img_convert_ctx, (const uint8_t* const*)frame->data, frame->linesize, 0, codeCtx->height, data, linesize);
+		cv::Mat mat;
+		mat = cv::cvarrToMat(PcvFrame);
+		av_packet_unref(packet);
+
+		return mat;
+	}
+	av_packet_unref(packet);
+	return cv::Mat();
+}
+
+bool SplitVideo::OpenSource(std::string path2file,bool reload)
 {
 	QMutexLocker locker(&mutex);
 	if (ifmtCtx && (!reload))
 	{
 		//sprintf(buf, "%s has loaded do not reload",filepath.c_str());
 		//printf(buf);
+		isopen = true;
 		return true;
 	}
 	else
 	{
 		if (ifmtCtx)
 			avformat_close_input(&ifmtCtx);
-		if (int rev = avformat_open_input(&ifmtCtx, filepath.c_str(), 0, 0) != 0)
+		if (int rev = avformat_open_input(&ifmtCtx, path2file.c_str(), 0, 0) != 0)
 		{
 			avformat_close_input(&ifmtCtx);
 		}
 		if (int ret = avformat_find_stream_info(ifmtCtx, 0)  < 0) {
 			return false;
 		}
-		inputFileName = filepath;
+		inputFileName = path2file;
+		path = path2file.substr(0, path2file.find_last_of('\\')+1);
 		if (video_index = av_find_best_stream(ifmtCtx, AVMEDIA_TYPE_VIDEO, 0, -1, nullptr, 0) < 0)
 		{
 			return false;
 		}
+		codePar = ifmtCtx->streams[video_index]->codecpar;
 		if (audio_index = av_find_best_stream(ifmtCtx, AVMEDIA_TYPE_AUDIO, -1, -1, NULL, 0) < 0)
 		{
 			return false;
@@ -88,21 +194,25 @@ bool SplitVideo::OpenSource(std::string filepath,bool reload)
 		{
 			return false;
 		}
+		isopen = true;
 		sprintf(buf, "%s has loaded video_index--%d audio_index--%d fps--%f", inputFileName.c_str(), video_index, audio_index, fps);
 		bufsize = sizeof(buf);
 		//printf(buf);
-		suffixName = filepath.substr(filepath.find_last_of('.') + 1);
+		suffixName = path2file.substr(path2file.find_last_of('.') + 1);
+		//readysp = true;
 		return true;
 	}
 }
 
 SplitVideo::~SplitVideo()
 {
-	//delete[]buf;
+	delete[]buf;
 }
 
 bool SplitVideo::Split(unsigned int start, unsigned int duration, const string & outname)
 {
+	if (!readysp)
+		return false;
 	OpenSource(inputFileName);
 	int ret;
 	QMutexLocker locker(&mutex);
@@ -227,6 +337,7 @@ bool SplitVideo::Split(unsigned int start, unsigned int duration, const string &
 		av_packet_unref(&readPkt);
 
 	}
+	av_packet_unref(&readPkt);
 	av_packet_unref(&splitKeyPacket);
 	av_write_trailer(ofmtCtx);
 	avformat_close_input(&ifmtCtx);

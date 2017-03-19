@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <QWidget>
+#include <QSortFilterProxyModel>
 #include "ui_caffeui.h"
 #include"segtablemodel.hpp"
 class caffeui : public QWidget {
@@ -16,7 +17,10 @@ public slots:
 	void SetOutputFile();
 private slots:
 	void contextMenu(const QPoint &pos);
+	void splitvideo();
 private:
 	Ui::caffeui ui;
+	QMenu *menu;
+	QSortFilterProxyModel *proxyModel;
 	SegTableModel *_model;
 };

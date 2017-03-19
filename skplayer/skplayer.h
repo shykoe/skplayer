@@ -19,6 +19,9 @@ public slots:
 	void sliderPressed();
 	void sliderReleased();
 	void play();
+protected:
+//	void closeEvent(QCloseEvent *event) override;
+
 private:
 	int VideoWidth = 0;
 	int VideoHeight = 0;

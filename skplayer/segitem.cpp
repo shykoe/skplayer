@@ -49,6 +49,33 @@ QVariant segitem::data(int column, int role) const
 
 }
 
+QVariant segitem::truedata(int column) const
+{
+	if (!_seg)
+	{
+		return QVariant();
+	}
+	else
+	{
+		switch (column)
+		{
+		case 0://id
+			return QVariant(_seg->id);
+		case 1://starttime
+			return QVariant(_seg->StartTime);
+		case 2://endtime
+			return QVariant(_seg->EndTime);
+		case 3://duration
+			return QVariant(_seg->Duration);
+		case 4:
+			return QVariant(_seg->name);
+		default:
+			return QVariant();
+		}
+	}
+	return QVariant();
+}
+
 void segitem::setData(int column, QVariant value)
 {
 	if (column > columnCount() || column < 0)

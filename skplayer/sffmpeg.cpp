@@ -289,7 +289,7 @@ bool sffmpeg::ToRGB( char * out, int outwidth, int outheight)
 	cCtx = sws_getCachedContext(cCtx, videoCtx->width, videoCtx->height,
 		videoCtx->pix_fmt, outwidth, outheight, AV_PIX_FMT_BGRA, SWS_BICUBIC, NULL, NULL, NULL);
 	if (!cCtx)
-	{
+	{	
 		mutex.unlock();
 		return false;
 	}

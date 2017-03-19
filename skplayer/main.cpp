@@ -11,14 +11,22 @@ int main(int argc, char *argv[])
 	
 	
 	QApplication a(argc, argv);
-	skplayer sk;
-	sk.show();
-	caffeui s;
-	s.show();
-	/*SplitVideo *sp = SplitVideo::Get();
+	//skplayer *sk = new skplayer;
+	//sk->show();
+	//caffeui s;
+	//s.show();
+	SplitVideo *sp = SplitVideo::Get();
 	sp->OpenSource("D:\\BaiduYunDownload\\Ariana Grande - Into You.mp4");
-	sp->Split(10, 10, "D:\\BaiduYunDownload\\test1.mp4");
-	sp->Split(20, 20, "D:\\BaiduYunDownload\\test2.mp4");
-	sp->Split(40, 20, "D:\\BaiduYunDownload\\test3.mp4");*/
+	sp->init();
+	int num = 0;
+	while (sp->read())
+	{
+		cv::Mat mat = sp->decode(300,300,5);
+		if (!mat.empty())
+		{
+			num++;
+			cv::imwrite("test"+std::to_string(num)+".jpg", mat);
+		}
+	}
 	return a.exec();
 }

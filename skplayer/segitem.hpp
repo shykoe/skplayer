@@ -21,6 +21,7 @@ public:
 	explicit segitem(segmentation *seg, QObject * parent = Q_NULLPTR);
 	static int columnCount();
 	QVariant data(int column, int role = Qt::DisplayRole) const;
+	QVariant truedata(int column) const;
 	void setData(int column,QVariant value);
 	~segitem();
 

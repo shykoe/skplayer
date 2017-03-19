@@ -13,8 +13,8 @@ class sffmpeg
 public:
 	static sffmpeg* Get()
 	{
-		static sffmpeg ff;
-		return &ff;
+		static sffmpeg ff1;
+		return &ff1;
 	}
 
 	int Open(const char* path);

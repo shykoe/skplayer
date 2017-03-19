@@ -5,10 +5,17 @@
 #include <QMutexLocker> 
 #include <tuple>
 #include <queue>
+#include "opencv/cv.h"
+#include "opencv2/opencv.hpp"
+#include "opencv/cxcore.h"
+#include "opencv/highgui.h"
 extern "C"
 {
 #include <libavcodec/avcodec.h>
+#include "libswscale/swscale.h"
+#include <libswresample/swresample.h>
 #include <libavformat/avformat.h>
+#include"libavutil/imgutils.h"
 }
 using std::vector;
 using std::string;
@@ -22,23 +29,46 @@ public:
 		static SplitVideo spv;
 		return &spv;
 	}
+	/*
+	init for extract cv::mat
+	*/
+	bool init();
+	/*
+	read every step frames 
+	return :success on true,error or end on false
+	*/
+	bool read();
+	/*
+	decode to a img with width and height 
+	step means it decode every step sec img ,default value 0 means decode every frame  
+	return empty mat on failure
+	*/
+	cv::Mat decode(int width, int height, int step = 0);
 	bool OpenSource(std::string FileName, bool reload = true);
 	~SplitVideo();
 	bool Split(unsigned int start, unsigned int duration, const string& outname);
 	char* getbuf() { return buf; }
 	size_t bufsize;
+	bool isopen = false;
+	std::string& getpath()  { return path; }
+	bool readysp;
 	//bool addTask(unsigned start, unsigned duration,string filename);
 private:
-
+	int framenum = 0;
 	SplitVideo();
 	uint64_t splitFrameSize;
 	string suffixName;
 	float fps = 0;
-	bool isInit;
 	string inputFileName;
-	string outputFileName;
+	string path;
 	int video_index, audio_index;
 	AVFormatContext *ifmtCtx = NULL, *ofmtCtx = NULL;
+	AVCodec *codec = NULL;
+	AVCodecParameters *codePar = NULL;
+	AVCodecContext *codeCtx = NULL;
+	AVFrame *frame = NULL;
+	AVPacket *packet = NULL;
+	SwsContext *img_convert_ctx = NULL;
 	bool writeVideoHeader(AVFormatContext *ifmt_ctx, AVFormatContext *ofmt_ctx, string out_filename);
 	QMutex mutex;
 	char* buf;

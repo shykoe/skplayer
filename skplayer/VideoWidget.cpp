@@ -50,4 +50,5 @@ void VideoWidget::timerEvent(QTimerEvent * e)
 
 VideoWidget::~VideoWidget()
 {
+	VideoThread::Get()->isexited = true;
 }
