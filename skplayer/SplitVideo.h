@@ -37,13 +37,13 @@ public:
 	read every step frames 
 	return :success on true,error or end on false
 	*/
-	bool read();
+	AVPacket read();
 	/*
 	decode to a img with width and height 
 	step means it decode every step sec img ,default value 0 means decode every frame  
 	return empty mat on failure
 	*/
-	cv::Mat decode(int width, int height, int step = 0);
+	IplImage* decode(AVPacket* pkt, int width, int height, int sec=10);
 	bool OpenSource(std::string FileName, bool reload = true);
 	~SplitVideo();
 	bool Split(unsigned int start, unsigned int duration, const string& outname);
@@ -67,7 +67,7 @@ private:
 	AVCodecParameters *codePar = NULL;
 	AVCodecContext *codeCtx = NULL;
 	AVFrame *frame = NULL;
-	AVPacket *packet = NULL;
+	//AVPacket *packet = NULL;
 	SwsContext *img_convert_ctx = NULL;
 	bool writeVideoHeader(AVFormatContext *ifmt_ctx, AVFormatContext *ofmt_ctx, string out_filename);
 	QMutex mutex;

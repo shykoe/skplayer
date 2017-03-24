@@ -12,6 +12,7 @@
 #pragma comment(lib, "opencv_core310d.lib")
 #pragma comment(lib,"opencv_imgproc310d.lib")
 #pragma comment(lib,"opencv_imgcodecs310d.lib")
+static int num = 0;
 float r2d(AVRational r)
 {
 	return r.num == 0 || r.den == 0 ? 0. : (float)r.num / (float)r.den;
@@ -88,73 +89,69 @@ bool SplitVideo::init()
 		return false;
 	}
 	int psize = codePar->width* codePar->height;
-	packet = (AVPacket*)malloc(sizeof(AVPacket));
-	if (av_new_packet(packet, psize) != 0)
+	//packet = (AVPacket*)malloc(sizeof(AVPacket));
+	//if (av_new_packet(packet, psize) != 0)
+	//{
+	//	return false;
+	//}
+
+	
+	return true;
+}
+
+AVPacket SplitVideo::read()
+{
+	QMutexLocker locker(&mutex);
+	AVPacket packet;
+	av_read_frame(ifmtCtx, &packet);
+	return packet;
+}
+
+IplImage* SplitVideo::decode(AVPacket* pkt, int width, int height, int sec)
+{
+	QMutexLocker locker(&mutex);
+	
+	if (pkt->stream_index != video_index)
 	{
-		return false;
+		return NULL;
 	}
-
-	
-	return true;
-}
-
-bool SplitVideo::read()
-{
-	QMutexLocker locker(&mutex);
-	
-	if (av_read_frame(ifmtCtx, packet) < 0)
-		return false;
-	return true;
-}
-
-cv::Mat SplitVideo::decode(int width, int height, int step)
-{
-	QMutexLocker locker(&mutex);
+	num++;
 	if (frame == NULL)
 	{
 		frame = av_frame_alloc();
 	}
-	if (packet->stream_index == video_index)
+	if (avcodec_send_packet(codeCtx, pkt) != 0)
 	{
-		framenum++;
-		if (avcodec_send_packet(codeCtx, packet) != 0)
-		{
-			return  cv::Mat();
-		}
-		if (avcodec_receive_frame(codeCtx, frame) != 0)
-		{
-			return  cv::Mat();
-		}
-
-		if (step)
-		{
-			
-		}
-
-		int pts = frame->pts *  r2d(ifmtCtx->streams[video_index]->time_base);
-		printf("time-%d-%d\n", pts / 60, pts % 60);
-		//height = (codeCtx->height * width / codeCtx->width);
-		img_convert_ctx = sws_getCachedContext(img_convert_ctx, codeCtx->width, codeCtx->height, codeCtx->pix_fmt, width, height, AV_PIX_FMT_BGR24, SWS_BICUBIC, NULL, NULL, NULL);
-		if (img_convert_ctx == NULL) 
-		{
-			return cv::Mat();
-		}
-		//uint8_t* out_bufferBRG = new uint8_t[av_image_get_buffer_size(AV_PIX_FMT_BGR24, width, height, 1)]();
-		uint8_t *data[AV_NUM_DATA_POINTERS] = { 0 };
-		int linesize[AV_NUM_DATA_POINTERS] = { 0 };
-		
-		linesize[0] = width * 3;
-		IplImage* PcvFrame = cvCreateImage(cvSize(width, height), 8, 3);
-		data[0] = (uint8_t*)PcvFrame->imageData;
-		sws_scale(img_convert_ctx, (const uint8_t* const*)frame->data, frame->linesize, 0, codeCtx->height, data, linesize);
-		cv::Mat mat;
-		mat = cv::cvarrToMat(PcvFrame);
-		av_packet_unref(packet);
-
-		return mat;
+		return  NULL;
 	}
-	av_packet_unref(packet);
-	return cv::Mat();
+	if (int rel = avcodec_receive_frame(codeCtx, frame) != 0)
+	{
+		printf("½âÂë´íÎó\n");
+		return  NULL;
+	}
+	if (sec && (num%sec) != 0)
+	{
+		return NULL;
+	}
+	int pts = frame->pts *  r2d(ifmtCtx->streams[video_index]->time_base);
+	printf("time-%d-%d\n", pts / 60, pts % 60);
+	//height = (codeCtx->height * width / codeCtx->width);
+	img_convert_ctx = sws_getCachedContext(img_convert_ctx, codeCtx->width, codeCtx->height, codeCtx->pix_fmt, width, height, AV_PIX_FMT_BGR24, SWS_BICUBIC, NULL, NULL, NULL);
+	if (img_convert_ctx == NULL)
+	{
+		return NULL;
+	}
+	//uint8_t* out_bufferBRG = new uint8_t[av_image_get_buffer_size(AV_PIX_FMT_BGR24, width, height, 1)]();
+	uint8_t *data[AV_NUM_DATA_POINTERS] = { 0 };
+	int linesize[AV_NUM_DATA_POINTERS] = { 0 };
+
+	linesize[0] = width * 3;
+	IplImage* PcvFrame = cvCreateImage(cvSize(width, height), 8, 3);
+	data[0] = (uint8_t*)PcvFrame->imageData;
+	sws_scale(img_convert_ctx, (const uint8_t* const*)frame->data, frame->linesize, 0, codeCtx->height, data, linesize);
+	return PcvFrame;
+
+	
 }
 
 bool SplitVideo::OpenSource(std::string path2file,bool reload)
