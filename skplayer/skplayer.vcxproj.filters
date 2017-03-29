@@ -104,6 +104,15 @@
     <ClCompile Include="Classifier.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="caffethread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_caffethread.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_caffethread.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="skplayer.h">
@@ -128,6 +137,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="segitem.hpp">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="caffethread.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

@@ -35,6 +35,7 @@ public:
     QTextEdit *LogText;
     QLineEdit *OutputDirEdit;
     QPushButton *OutputDir;
+    QPushButton *InitCaffe;
 
     void setupUi(QWidget *caffeui)
     {
@@ -71,6 +72,9 @@ public:
         OutputDir = new QPushButton(caffeui);
         OutputDir->setObjectName(QStringLiteral("OutputDir"));
         OutputDir->setGeometry(QRect(440, 100, 81, 21));
+        InitCaffe = new QPushButton(caffeui);
+        InitCaffe->setObjectName(QStringLiteral("InitCaffe"));
+        InitCaffe->setGeometry(QRect(20, 130, 71, 31));
 
         retranslateUi(caffeui);
         QObject::connect(ModelButton, SIGNAL(clicked()), caffeui, SLOT(SetModelFile()));
@@ -88,6 +92,7 @@ public:
         ProtoButton->setText(QApplication::translate("caffeui", "Proto\346\226\207\344\273\266", Q_NULLPTR));
         MeanButton->setText(QApplication::translate("caffeui", "Mean\346\226\207\344\273\266", Q_NULLPTR));
         OutputDir->setText(QApplication::translate("caffeui", "\345\255\230\346\224\276\344\275\215\347\275\256", Q_NULLPTR));
+        InitCaffe->setText(QApplication::translate("caffeui", "InitCaffe", Q_NULLPTR));
     } // retranslateUi
 
 };

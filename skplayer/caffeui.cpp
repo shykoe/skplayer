@@ -4,6 +4,7 @@
 #include "qtableview.h"
 #include "SplitVideo.h"
 #include <QMenu>
+
 caffeui::caffeui(QWidget * parent) : QWidget(parent) {
 	ui.setupUi(this);
 	//ui.Seginfo->
@@ -20,8 +21,23 @@ caffeui::caffeui(QWidget * parent) : QWidget(parent) {
 	ui.OutputDirEdit->setText(QCoreApplication::applicationDirPath());
 	menu = new QMenu();
 	QAction *splitAction = menu->addAction(QString::fromLocal8Bit("分割视频"));
+
+	mythread = new CaffeThread(this);
+	string model_file = "E:\\videocaffedata\\template_net.prototxt";
+	string trained_file = "E:\\videocaffedata\\_iter_15000.caffemodel";
+	string mean_file = "E:\\videocaffedata\\seg_leveldb_mean";
+	string label_file = "synset_words.txt";
+
+	mythread->SetConf(model_file, trained_file, mean_file);
+
+	connect(this->mythread, SIGNAL(CaffeInit()), this, SLOT(Caffed()));
 	connect(ui.Seginfo, SIGNAL(customContextMenuRequested(const QPoint)), this, SLOT(contextMenu(const QPoint)));
 	connect(splitAction, &QAction::triggered, this, &caffeui::splitvideo);
+	connect(ui.InitCaffe, SIGNAL(clicked()), SLOT(InitCaffe()));
+	
+
+
+	//debug
 	segmentation *test = new segmentation(1, 11, 2, 33, tr("test.mp4"));
 	segmentation *test2 = new segmentation(1, 11, 2, 33, tr("test.mp4"));
 	segmentation *test3 = new segmentation(1, 11, 2, 33, tr("test.mp4"));
@@ -29,6 +45,8 @@ caffeui::caffeui(QWidget * parent) : QWidget(parent) {
 	_model->appendItem(test2);
 	_model->appendItem(test3);
 	SplitVideo::Get()->OpenSource("D:\\BaiduYunDownload\\Ariana Grande - Into You.mp4");
+
+
 	startTimer(40);
 	
 }
@@ -102,12 +120,22 @@ void caffeui::SetOutputFile()
 	printf("%s", name.toStdString().c_str());
 	ui.OutputDirEdit->setText(name);
 }
+void caffeui::InitCaffe()
+{
+	ui.InitCaffe->setEnabled(false);
+	this->mythread->run();
+}
+void caffeui::Caffed()
+{
+	ui.InitCaffe->setEnabled(true);
+	ui.LogText->append("init caffe success");
+}
 void caffeui::timerEvent(QTimerEvent * e)
 {
-	if (SplitVideo::Get()->bufsize > 0)
+	/*if (SplitVideo::Get()->bufsize > 0)
 	{
 		ui.LogText->setText(SplitVideo::Get()->getbuf());
-	}
+	}*/
 }
 caffeui::~caffeui() {
 	
