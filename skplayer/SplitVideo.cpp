@@ -99,15 +99,16 @@ bool SplitVideo::init()
 	return true;
 }
 
-AVPacket SplitVideo::read()
+AVPacket SplitVideo::read(int* flag)
 {
 	QMutexLocker locker(&mutex);
 	AVPacket packet;
-	av_read_frame(ifmtCtx, &packet);
+	memset(flag, 0, sizeof(int));
+	*flag = av_read_frame(ifmtCtx, &packet);
 	return packet;
 }
 
-IplImage* SplitVideo::decode(AVPacket* pkt, int width, int height, int sec)
+IplImage* SplitVideo::decode(AVPacket* pkt, int width, int height, int* timestamp, int sec)
 {
 	QMutexLocker locker(&mutex);
 	
@@ -134,7 +135,9 @@ IplImage* SplitVideo::decode(AVPacket* pkt, int width, int height, int sec)
 		return NULL;
 	}
 	int pts = frame->pts *  r2d(ifmtCtx->streams[video_index]->time_base);
-	printf("time-%d-%d\n", pts / 60, pts % 60);
+	memset(timestamp, 0, sizeof(int));
+	*timestamp = pts;
+	//printf("time-%d-%d\n", pts / 60, pts % 60);
 	//height = (codeCtx->height * width / codeCtx->width);
 	img_convert_ctx = sws_getCachedContext(img_convert_ctx, codeCtx->width, codeCtx->height, codeCtx->pix_fmt, width, height, AV_PIX_FMT_BGR24, SWS_BICUBIC, NULL, NULL, NULL);
 	if (img_convert_ctx == NULL)
@@ -172,6 +175,7 @@ bool SplitVideo::OpenSource(std::string path2file,bool reload)
 		{
 			avformat_close_input(&ifmtCtx);
 		}
+		totalSec = ifmtCtx->duration * AV_TIME_BASE;
 		if (int ret = avformat_find_stream_info(ifmtCtx, 0)  < 0) {
 			return false;
 		}

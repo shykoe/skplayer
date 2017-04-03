@@ -14,6 +14,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QTableView>
@@ -36,6 +37,9 @@ public:
     QLineEdit *OutputDirEdit;
     QPushButton *OutputDir;
     QPushButton *InitCaffe;
+    QPushButton *AnalysisBt;
+    QLineEdit *ScoreIp;
+    QLabel *ScoreLb;
 
     void setupUi(QWidget *caffeui)
     {
@@ -75,6 +79,15 @@ public:
         InitCaffe = new QPushButton(caffeui);
         InitCaffe->setObjectName(QStringLiteral("InitCaffe"));
         InitCaffe->setGeometry(QRect(20, 130, 71, 31));
+        AnalysisBt = new QPushButton(caffeui);
+        AnalysisBt->setObjectName(QStringLiteral("AnalysisBt"));
+        AnalysisBt->setGeometry(QRect(440, 130, 71, 31));
+        ScoreIp = new QLineEdit(caffeui);
+        ScoreIp->setObjectName(QStringLiteral("ScoreIp"));
+        ScoreIp->setGeometry(QRect(360, 130, 51, 21));
+        ScoreLb = new QLabel(caffeui);
+        ScoreLb->setObjectName(QStringLiteral("ScoreLb"));
+        ScoreLb->setGeometry(QRect(320, 130, 41, 21));
 
         retranslateUi(caffeui);
         QObject::connect(ModelButton, SIGNAL(clicked()), caffeui, SLOT(SetModelFile()));
@@ -93,6 +106,8 @@ public:
         MeanButton->setText(QApplication::translate("caffeui", "Mean\346\226\207\344\273\266", Q_NULLPTR));
         OutputDir->setText(QApplication::translate("caffeui", "\345\255\230\346\224\276\344\275\215\347\275\256", Q_NULLPTR));
         InitCaffe->setText(QApplication::translate("caffeui", "InitCaffe", Q_NULLPTR));
+        AnalysisBt->setText(QApplication::translate("caffeui", "Analysis", Q_NULLPTR));
+        ScoreLb->setText(QApplication::translate("caffeui", "score>", Q_NULLPTR));
     } // retranslateUi
 
 };

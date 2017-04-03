@@ -28,8 +28,8 @@ int main(int argc, char *argv[])
 	//}
 	//getchar();
 	QApplication a(argc, argv);
-	//skplayer *sk = new skplayer;
-	//sk->show();
+	skplayer *sk = new skplayer;
+	sk->show();
 	caffeui s;
 	s.show();
 	//qDebug("123");

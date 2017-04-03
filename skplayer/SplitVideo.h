@@ -37,13 +37,14 @@ public:
 	read every step frames 
 	return :success on true,error or end on false
 	*/
-	AVPacket read();
+	AVPacket read(int* flag);
 	/*
 	decode to a img with width and height 
 	step means it decode every step sec img ,default value 0 means decode every frame  
+	timestamp set to the  timestamp of the image
 	return empty mat on failure
 	*/
-	IplImage* decode(AVPacket* pkt, int width, int height, int sec=10);
+	IplImage* decode(AVPacket* pkt, int width, int height,int* timestamp, int sec=10);
 	bool OpenSource(std::string FileName, bool reload = true);
 	~SplitVideo();
 	bool Split(unsigned int start, unsigned int duration, const string& outname);
@@ -52,12 +53,13 @@ public:
 	bool isopen = false;
 	std::string& getpath()  { return path; }
 	bool readysp;
+	string suffixName;
+	int totalSec;
 	//bool addTask(unsigned start, unsigned duration,string filename);
 private:
 	int framenum = 0;
 	SplitVideo();
 	uint64_t splitFrameSize;
-	string suffixName;
 	float fps = 0;
 	string inputFileName;
 	string path;
