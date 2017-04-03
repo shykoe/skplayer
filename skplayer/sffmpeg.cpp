@@ -78,6 +78,7 @@ int sffmpeg::Open(const char * path)
 				this->audioStream,this->sampleRate, this->sampleSize, this->channel);
 		}
 	}
+	isexist = true;
 	mutex.unlock();
 	return totalMs;
 }

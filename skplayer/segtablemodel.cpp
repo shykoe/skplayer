@@ -47,13 +47,9 @@ QVariant SegTableModel::headerData(int section, Qt::Orientation orientation, int
 	case 0:
 		return QVariant(tr("ID"));
 	case 1:
-		return QVariant(tr("StartTime"));
+		return QVariant(tr("time"));
 	case 2:
-		return QVariant(tr("EndTime"));
-	case 3:
-		return QVariant(tr("Duration"));
-	case 4:
-		return QVariant(tr("name"));
+		return QVariant(tr("Score"));
 	default:
 		return QVariant();
 	}
@@ -80,6 +76,10 @@ Qt::ItemFlags SegTableModel::flags(const QModelIndex & index) const
 	if (!index.isValid())
 		return QAbstractItemModel::flags(index);
 	if (index.column() == 0)
+	{
+		return QAbstractItemModel::flags(index);
+	}
+	if (index.column() == 2)
 	{
 		return QAbstractItemModel::flags(index);
 	}

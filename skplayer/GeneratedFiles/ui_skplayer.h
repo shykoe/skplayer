@@ -15,7 +15,10 @@
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QTableView>
+#include <QtWidgets/QTextEdit>
 #include <QtWidgets/QWidget>
 #include "sslider.h"
 #include "videowidget.h"
@@ -32,12 +35,26 @@ public:
     QLabel *playTime1_2;
     QLabel *sp;
     sSlider *playslider;
+    QLineEdit *ModelEdit;
+    QLabel *ScoreLb;
+    QLineEdit *MeanEdit;
+    QPushButton *ModelButton;
+    QPushButton *AnalysisBt;
+    QLineEdit *ScoreIp;
+    QLineEdit *ProtoEdit;
+    QPushButton *OutputDir;
+    QPushButton *InitCaffe;
+    QPushButton *ProtoButton;
+    QLineEdit *OutputDirEdit;
+    QPushButton *MeanButton;
+    QTableView *Seginfo;
+    QTextEdit *LogText;
 
     void setupUi(QWidget *skplayerClass)
     {
         if (skplayerClass->objectName().isEmpty())
             skplayerClass->setObjectName(QStringLiteral("skplayerClass"));
-        skplayerClass->resize(800, 600);
+        skplayerClass->resize(1125, 896);
         QIcon icon;
         icon.addFile(QStringLiteral(":/skplayer/Resources/play_128px_1194928_easyicon.net.ico"), QSize(), QIcon::Normal, QIcon::Off);
         skplayerClass->setWindowIcon(icon);
@@ -71,6 +88,48 @@ public:
         playslider->setGeometry(QRect(240, 540, 551, 21));
         playslider->setMaximum(999);
         playslider->setOrientation(Qt::Horizontal);
+        ModelEdit = new QLineEdit(skplayerClass);
+        ModelEdit->setObjectName(QStringLiteral("ModelEdit"));
+        ModelEdit->setGeometry(QRect(80, 670, 401, 21));
+        ScoreLb = new QLabel(skplayerClass);
+        ScoreLb->setObjectName(QStringLiteral("ScoreLb"));
+        ScoreLb->setGeometry(QRect(390, 790, 41, 21));
+        MeanEdit = new QLineEdit(skplayerClass);
+        MeanEdit->setObjectName(QStringLiteral("MeanEdit"));
+        MeanEdit->setGeometry(QRect(80, 730, 401, 21));
+        ModelButton = new QPushButton(skplayerClass);
+        ModelButton->setObjectName(QStringLiteral("ModelButton"));
+        ModelButton->setGeometry(QRect(510, 670, 81, 21));
+        AnalysisBt = new QPushButton(skplayerClass);
+        AnalysisBt->setObjectName(QStringLiteral("AnalysisBt"));
+        AnalysisBt->setGeometry(QRect(510, 790, 71, 31));
+        ScoreIp = new QLineEdit(skplayerClass);
+        ScoreIp->setObjectName(QStringLiteral("ScoreIp"));
+        ScoreIp->setGeometry(QRect(430, 790, 51, 21));
+        ProtoEdit = new QLineEdit(skplayerClass);
+        ProtoEdit->setObjectName(QStringLiteral("ProtoEdit"));
+        ProtoEdit->setGeometry(QRect(80, 700, 401, 21));
+        OutputDir = new QPushButton(skplayerClass);
+        OutputDir->setObjectName(QStringLiteral("OutputDir"));
+        OutputDir->setGeometry(QRect(510, 760, 81, 21));
+        InitCaffe = new QPushButton(skplayerClass);
+        InitCaffe->setObjectName(QStringLiteral("InitCaffe"));
+        InitCaffe->setGeometry(QRect(90, 790, 71, 31));
+        ProtoButton = new QPushButton(skplayerClass);
+        ProtoButton->setObjectName(QStringLiteral("ProtoButton"));
+        ProtoButton->setGeometry(QRect(510, 700, 81, 21));
+        OutputDirEdit = new QLineEdit(skplayerClass);
+        OutputDirEdit->setObjectName(QStringLiteral("OutputDirEdit"));
+        OutputDirEdit->setGeometry(QRect(80, 760, 401, 21));
+        MeanButton = new QPushButton(skplayerClass);
+        MeanButton->setObjectName(QStringLiteral("MeanButton"));
+        MeanButton->setGeometry(QRect(510, 730, 81, 21));
+        Seginfo = new QTableView(skplayerClass);
+        Seginfo->setObjectName(QStringLiteral("Seginfo"));
+        Seginfo->setGeometry(QRect(800, 0, 321, 601));
+        LogText = new QTextEdit(skplayerClass);
+        LogText->setObjectName(QStringLiteral("LogText"));
+        LogText->setGeometry(QRect(590, 600, 531, 291));
 
         retranslateUi(skplayerClass);
         QObject::connect(openButton, SIGNAL(clicked()), skplayerClass, SLOT(open()));
@@ -89,6 +148,13 @@ public:
         playTime1->setText(QApplication::translate("skplayerClass", "000:00", Q_NULLPTR));
         playTime1_2->setText(QApplication::translate("skplayerClass", "000:00", Q_NULLPTR));
         sp->setText(QApplication::translate("skplayerClass", "/", Q_NULLPTR));
+        ScoreLb->setText(QApplication::translate("skplayerClass", "score>", Q_NULLPTR));
+        ModelButton->setText(QApplication::translate("skplayerClass", "Model\346\226\207\344\273\266", Q_NULLPTR));
+        AnalysisBt->setText(QApplication::translate("skplayerClass", "Analysis", Q_NULLPTR));
+        OutputDir->setText(QApplication::translate("skplayerClass", "\345\255\230\346\224\276\344\275\215\347\275\256", Q_NULLPTR));
+        InitCaffe->setText(QApplication::translate("skplayerClass", "InitCaffe", Q_NULLPTR));
+        ProtoButton->setText(QApplication::translate("skplayerClass", "Proto\346\226\207\344\273\266", Q_NULLPTR));
+        MeanButton->setText(QApplication::translate("skplayerClass", "Mean\346\226\207\344\273\266", Q_NULLPTR));
     } // retranslateUi
 
 };

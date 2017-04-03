@@ -3,7 +3,11 @@
 
 #include <QtWidgets/QWidget>
 #include "ui_skplayer.h"
-
+#include"segtablemodel.hpp"
+#include"caffethread.h"
+#include <QSortFilterProxyModel>
+#include <vector>
+#include <tuple>
 class skplayer : public QWidget
 {
 	Q_OBJECT
@@ -19,13 +23,32 @@ public slots:
 	void sliderPressed();
 	void sliderReleased();
 	void play();
+	void splitvideo_s();
+	void splitvideo_e();
+	void contextMenu(const QPoint &pos);
+	void SetModelFile();
+	void SetMeanFile();
+	void SetProtoFile();
+	void SetOutputFile();
+	void InitCaffe();
+	void AnalysisMsg();
+	void getmes(int time, float score);
+	void Caffed();
 protected:
 //	void closeEvent(QCloseEvent *event) override;
 
 private:
+	void AddSegitem(int stime, float score);
 	int VideoWidth = 0;
 	int VideoHeight = 0;
-	
+	QMenu *menu;
+	QSortFilterProxyModel *proxyModel;
+	SegTableModel *_model;
+	caffe::Classifier* cly = NULL;
+	CaffeThread* mythread;
+	int startItem = -1;
+	int endItem = -1;
+	std::vector<std::tuple<int, float> > data;
 	Ui::skplayerClass ui;
 };
 

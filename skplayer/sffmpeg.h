@@ -44,6 +44,7 @@ public:
 	int totalMs;
 	double fps = 0;
 	int pts = 0;
+	bool isexist = false;
 	bool isplay = false;
 	int sampleRate = 48000;
 	int sampleSize = 16;

@@ -16,13 +16,17 @@ caffeui::caffeui(QWidget * parent) : QWidget(parent) {
 	proxyModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
 	proxyModel->setFilterKeyColumn(-1);
 	ui.Seginfo->setModel(proxyModel);
+	ui.Seginfo->setStyleSheet("selection-background-color:QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(152,202,104), stop: 0.25 #7fbb43, stop: 0.5 #6f9d3d,  stop: 0.7 #66b01e);");
+	ui.Seginfo->horizontalHeader()->setStretchLastSection(true);
 	ui.Seginfo->setSelectionBehavior(QAbstractItemView::SelectRows);
 	ui.Seginfo->setContextMenuPolicy(Qt::CustomContextMenu);
 	ui.LogText->setReadOnly(true);
 	ui.OutputDirEdit->setText(QCoreApplication::applicationDirPath());
 	menu = new QMenu();
-	QAction *splitAction = menu->addAction(QString::fromLocal8Bit("分割视频"));
-
+	QAction *toPlay = menu->addAction(QString::fromLocal8Bit("跳到此处播放"));
+	QAction *splitAction_s = menu->addAction(QString::fromLocal8Bit("设置为起始点"));
+	QAction *splitAction_e = menu->addAction(QString::fromLocal8Bit("设置为终点"));
+	//splitAction->setCheckable(true);
 	mythread = CaffeThread::Getcaffe();
 
 
@@ -38,15 +42,16 @@ caffeui::caffeui(QWidget * parent) : QWidget(parent) {
 	connect(this->mythread, SIGNAL(CaffeInit()), this, SLOT(Caffed()));
 	connect(this->mythread, SIGNAL(message(int,float)), this, SLOT(getmes(int, float)));
 	connect(ui.Seginfo, SIGNAL(customContextMenuRequested(const QPoint)), this, SLOT(contextMenu(const QPoint)));
-	connect(splitAction, &QAction::triggered, this, &caffeui::splitvideo);
+	connect(splitAction_s, &QAction::triggered, this, &caffeui::splitvideo_s);
+	connect(splitAction_e, &QAction::triggered, this, &caffeui::splitvideo_e);
 	connect(ui.InitCaffe, SIGNAL(clicked()), SLOT(InitCaffe()));
 	connect(ui.AnalysisBt, SIGNAL(clicked()), this, SLOT(AnalysisMsg()));
 
 
 	//debug
-	AddSegitem( 11, 2, 33, tr("test.mp4"));
-	AddSegitem(11, 2, 33, tr("test.mp4"));
-	AddSegitem(11, 2, 33, tr("test.mp4"));
+	AddSegitem( 11, 0.111);
+	AddSegitem(11, 0.111);
+	AddSegitem(11, 0.111);
 
 	//SplitVideo::Get()->OpenSource("D:\\BaiduYunDownload\\Ariana Grande - Into You.mp4");
 
@@ -54,20 +59,44 @@ caffeui::caffeui(QWidget * parent) : QWidget(parent) {
 	//startTimer(40);
 	
 }
-void caffeui::splitvideo()
+void caffeui::toPlay()
+{
+	if (!sffmpeg::Get()->isexist)
+	{
+		ui.LogText->append(QString::fromLocal8Bit("播放器或者视频文件未打开"));
+		return;
+	}
+
+}
+void caffeui::splitvideo_e()
 {
 	printf("%d\n", ui.Seginfo->currentIndex().row());
-	auto start = _model->getItem(ui.Seginfo->currentIndex().row())->truedata(1);
-	auto end = _model->getItem(ui.Seginfo->currentIndex().row())->truedata(2);
-	auto dur = _model->getItem(ui.Seginfo->currentIndex().row())->truedata(3);
-	auto name = _model->getItem(ui.Seginfo->currentIndex().row())->truedata(4);
-	printf("%s\n", SplitVideo::Get()->getpath().c_str());
-	printf("%d-%d-%d-%s\n", start.toInt(), end.toInt(), dur.toInt(),name.toString().toStdString().c_str());
-	if (SplitVideo::Get()->isopen)
+	if (endItem != -1)
 	{
-		SplitVideo::Get()->Split(start.toInt(), dur.toInt(), ui.OutputDirEdit->text().toStdString() + "//"+name.toString().toStdString());
+		ui.LogText->append(QString::fromLocal8Bit("已经设置过终点"));
+		_model->getItem(endItem)->setflag(segitem::Skip);
+		endItem = ui.Seginfo->currentIndex().row();
+		_model->getItem(ui.Seginfo->currentIndex().row())->setflag(segitem::End);
 	}
-	
+	endItem = ui.Seginfo->currentIndex().row();
+	_model->getItem(ui.Seginfo->currentIndex().row())->setflag(segitem::End);
+	ui.LogText->append(QString::fromLocal8Bit("设置 %1 sec 为终点").arg(_model->getItem(ui.Seginfo->currentIndex().row())->truedata(1).toInt()) );
+
+}
+void caffeui::splitvideo_s()
+{
+	printf("%d\n", ui.Seginfo->currentIndex().row());
+	if (startItem != -1)
+	{
+		ui.LogText->append(QString::fromLocal8Bit("已经设置过起始点"));
+		_model->getItem(startItem)->setflag(segitem::Skip);
+		startItem = ui.Seginfo->currentIndex().row();
+		_model->getItem(ui.Seginfo->currentIndex().row())->setflag(segitem::Start);
+	}
+	startItem = ui.Seginfo->currentIndex().row();
+	_model->getItem(ui.Seginfo->currentIndex().row())->setflag(segitem::Start);
+	ui.LogText->append(QString::fromLocal8Bit("设置 %1 sec 为起点").arg(_model->getItem(ui.Seginfo->currentIndex().row())->truedata(1).toInt()));
+
 }
 void caffeui::contextMenu(const QPoint &pos)
 {
@@ -173,9 +202,9 @@ void caffeui::getmes(int time, float score)
 	ui.LogText->append(buf);
 	data.push_back(std::make_tuple(time, score));
 }
-void caffeui::AddSegitem(int stime, int endtime, int duration, QString name)
+void caffeui::AddSegitem(int stime, float score)
 {
-	segmentation *test = new segmentation(0, stime, endtime, duration, name);
+	segmentation *test = new segmentation(0,stime, score);
 	_model->appendItem(test);
 
 }
@@ -185,8 +214,6 @@ void caffeui::AnalysisMsg()
 	bool flag = true;
 	string suffixName = SplitVideo::Get()->suffixName;
 	float score = pdata.toFloat(&flag);
-	vector<int> segtime;
-	vector<int> segind;
 	if (pdata.isEmpty() || !flag)
 	{
 		ui.LogText->append("invalid score input");
@@ -197,32 +224,8 @@ void caffeui::AnalysisMsg()
 		float Pscore = std::get<1>(*p);
 		if (Pscore > score)
 		{
-			segtime.push_back(std::get<0>(*p));
+			AddSegitem(std::get<0>(*p), Pscore);
 		}
-	}
-	if (segtime.empty())
-		return;
-	for (auto p = segtime.begin(); p != segtime.end(); p++)
-	{
-		if (p == segtime.begin())
-		{
-			segind.push_back(*p);
-		}
-		else if (*(p) - *(p-1) > 10)
-		{
-			segind.push_back(*(p - 1));
-			segind.push_back(*p);
-		}
-	}
-	segind.push_back(SplitVideo::Get()->totalSec);
-	for (auto p = segind.begin() + 1; p != segind.end(); p = p + 2)
-	{
-		QString name = QString("%1.%2").arg(*p).arg(suffixName.c_str());
-		int start = *(p-1);
-		int end = *p;
-		int duration = end - start;
-		AddSegitem(start, end, duration, name);
-
 	}
 }
 void caffeui::timerEvent(QTimerEvent * e)

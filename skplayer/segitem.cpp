@@ -7,7 +7,7 @@ segitem::segitem(segmentation *seg, QObject * parent) :_seg(seg), QObject(parent
 
 int segitem::columnCount()
 {
-	return 5;
+	return 3;
 }
 QString int2time(int sec)
 {
@@ -33,17 +33,21 @@ QVariant segitem::data(int column, int role) const
 		{
 		case 0://id
 			return QVariant(_seg->id);
-		case 1://starttime
-			return QVariant(int2time(_seg->StartTime));
-		case 2://endtime
-			return QVariant(int2time(_seg->EndTime));
-		case 3://duration
-			return QVariant(int2time(_seg->Duration));
-		case 4:
-			return QVariant(_seg->name);
+		case 1://time
+			return QVariant(int2time(_seg->_time));
+		case 2://score
+			return QVariant(_seg->_score);
 		default:
 			return QVariant();
 		}
+	}
+	if (role == Qt::BackgroundRole)
+	{
+		if(this->segflag ==  Start)//start 
+			return QColor(87, 132, 149);
+		if (this->segflag == End)//end
+			return QColor(152, 84, 115);
+		return QVariant();
 	}
 	return QVariant();
 
@@ -62,13 +66,9 @@ QVariant segitem::truedata(int column) const
 		case 0://id
 			return QVariant(_seg->id);
 		case 1://starttime
-			return QVariant(_seg->StartTime);
+			return QVariant(_seg->_time);
 		case 2://endtime
-			return QVariant(_seg->EndTime);
-		case 3://duration
-			return QVariant(_seg->Duration);
-		case 4:
-			return QVariant(_seg->name);
+			return QVariant(_seg->_score);
 		default:
 			return QVariant();
 		}
@@ -88,27 +88,26 @@ void segitem::setData(int column, QVariant value)
 		_seg->id = value.toUInt();
 		return;
 	case 1:
-		_seg->StartTime = time2int(value.toString());
+		_seg->_time = time2int(value.toString());
 		return;
 	case 2:
-		_seg->EndTime = time2int(value.toString());
-		return;
-	case 3:
-		_seg->Duration = time2int(value.toString());
-		return;
-	case 4:
-		_seg->name = value.toString();
+		_seg->_score = value.toFloat();
 		return;
 	default:
 		return;
 	}
 }
 
+void segitem::setflag(SegTabCl flag)
+{
+	this->segflag = flag;
+}
+
 segitem::~segitem() {
 	
 }
 
-segmentation::segmentation(int id, int stime, int endtime, int duration, QString name)
-	:id(id), StartTime(stime), EndTime(endtime), Duration(duration), name(name)
+segmentation::segmentation(int id, int time, float score)
+	:id(id), _time(time), _score(score)
 {
 }

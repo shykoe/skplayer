@@ -30,8 +30,8 @@ int main(int argc, char *argv[])
 	QApplication a(argc, argv);
 	skplayer *sk = new skplayer;
 	sk->show();
-	caffeui s;
-	s.show();
+	//caffeui s;
+	//s.show();
 	//qDebug("123");
 	//SplitVideo *sp = SplitVideo::Get();
 	//sp->OpenSource("D:\\BaiduYunDownload\\Ariana Grande - Into You.mp4");

@@ -6,6 +6,7 @@
 #include "ui_caffeui.h"
 #include"segtablemodel.hpp"
 #include"caffethread.h"
+#include"sffmpeg.h"
 #ifdef STRICT
 #undef STRICT
 #define __CLASSIFIER__
@@ -31,18 +32,22 @@ public slots:
 	void AnalysisMsg();
 private slots:
 	void contextMenu(const QPoint &pos);
-	void splitvideo();
+	void splitvideo_s();
+	void splitvideo_e();
+	void toPlay();
 	void Caffed();
 	void getmes(int time, float score);
 signals:
 	void sendconf(QString model, QString proto, QString mean);
 private:
-	void AddSegitem(int stime, int endtime, int duration, QString name);
+	void AddSegitem(int stime, float score);
 	Ui::caffeui ui;
 	QMenu *menu;
 	QSortFilterProxyModel *proxyModel;
 	SegTableModel *_model;
 	caffe::Classifier* cly = NULL;
 	CaffeThread* mythread;
+	int startItem = -1;
+	int endItem = -1;
 	std::vector<std::tuple<int, float> > data;
 };

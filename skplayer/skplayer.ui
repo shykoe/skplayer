@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1125</width>
+    <height>896</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -123,6 +123,167 @@ font: 9pt &quot;黑体&quot;;</string>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="ModelEdit">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>670</y>
+     <width>401</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="ScoreLb">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>790</y>
+     <width>41</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>score&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="MeanEdit">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>730</y>
+     <width>401</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="ModelButton">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>670</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Model文件</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="AnalysisBt">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>790</y>
+     <width>71</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Analysis</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="ScoreIp">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>790</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="ProtoEdit">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>700</y>
+     <width>401</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="OutputDir">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>760</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>存放位置</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="InitCaffe">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>790</y>
+     <width>71</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>InitCaffe</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="ProtoButton">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>700</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Proto文件</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="OutputDirEdit">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>760</y>
+     <width>401</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="MeanButton">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>730</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Mean文件</string>
+   </property>
+  </widget>
+  <widget class="QTableView" name="Seginfo">
+   <property name="geometry">
+    <rect>
+     <x>800</x>
+     <y>0</y>
+     <width>321</width>
+     <height>601</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="LogText">
+   <property name="geometry">
+    <rect>
+     <x>590</x>
+     <y>600</y>
+     <width>531</width>
+     <height>291</height>
+    </rect>
    </property>
   </widget>
  </widget>
