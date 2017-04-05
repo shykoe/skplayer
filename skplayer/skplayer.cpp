@@ -41,7 +41,7 @@ skplayer::skplayer(QWidget *parent)
 	QAction *toPlay = menu->addAction(QString::fromLocal8Bit("跳到此处播放"));
 	QAction *splitAction_s = menu->addAction(QString::fromLocal8Bit("设置为起始点"));
 	QAction *splitAction_e = menu->addAction(QString::fromLocal8Bit("设置为终点"));
-
+	QAction *clearAction = menu->addAction(QString::fromLocal8Bit("清空列表"));
 	mythread = CaffeThread::Getcaffe();
 
 
@@ -66,8 +66,7 @@ skplayer::skplayer(QWidget *parent)
 	connect(toPlay, &QAction::triggered, this, &skplayer::toPlay);
 	connect(ui.SplitBt, SIGNAL(clicked()), this, SLOT(splitvideo()));
 	connect(ui.ResetSE, SIGNAL(clicked()), this, SLOT(RestRE()));
-	for(int i = 0; i<100;i++)
-		AddSegitem(i, 0.111);
+	connect(clearAction, &QAction::triggered, this, &skplayer::clearTb);
 
 }
 void skplayer::Caffed()
@@ -405,4 +404,8 @@ void skplayer::RestRE()
 	}
 	ui.EndTm->clear();
 	ui.StartTm->clear();
+}
+void skplayer::clearTb()
+{
+	_model->removeRows(0, _model->rowCount());
 }

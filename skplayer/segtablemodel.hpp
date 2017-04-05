@@ -18,6 +18,7 @@ public:
 	bool appendItem(segmentation* seg, const QModelIndex &parent = QModelIndex());
 	Qt::ItemFlags flags(const QModelIndex &index) const override;
 	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
+	bool removeRows(int row, int count, const QModelIndex & parent = QModelIndex()) override;
 	void  reflesh(int row);
 private:
 	QList< std::shared_ptr<segitem> > _items;

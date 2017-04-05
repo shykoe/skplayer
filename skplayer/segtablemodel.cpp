@@ -101,3 +101,13 @@ void SegTableModel::reflesh(int row)
 {
 	emit dataChanged(index(row, 0), index(row, 2));
 }
+bool SegTableModel::removeRows(int row, int count, const QModelIndex & parent)
+{
+	if (row < 0 || count <= 0 || count + row > _items.count()) {
+		return false;
+	}
+	beginRemoveRows(parent, row, row + count - 1);
+	_items.erase(_items.begin() + row, _items.begin() + row + count);
+	endRemoveRows();
+	return true;
+}

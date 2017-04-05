@@ -37,6 +37,7 @@ public slots:
 	void toPlay();
 	void splitvideo();
 	void RestRE();
+	void clearTb();
 protected:
 //	void closeEvent(QCloseEvent *event) override;
 
