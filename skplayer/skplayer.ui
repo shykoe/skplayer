@@ -286,6 +286,114 @@ font: 9pt &quot;黑体&quot;;</string>
     </rect>
    </property>
   </widget>
+  <widget class="QPushButton" name="SplitBt">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>830</y>
+     <width>71</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>分割视频</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="StartTm">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>840</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="EndTm">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>840</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="ScoreLb_2">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>840</y>
+     <width>41</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Start</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="ScoreLb_3">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>840</y>
+     <width>41</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>End</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="ResetSE">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>840</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>使用输入时间</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="FileName">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>870</y>
+     <width>91</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="ScoreLb_4">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>870</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>文件名称</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="suffixName">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>870</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

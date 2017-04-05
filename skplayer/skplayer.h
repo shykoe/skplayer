@@ -34,6 +34,9 @@ public slots:
 	void AnalysisMsg();
 	void getmes(int time, float score);
 	void Caffed();
+	void toPlay();
+	void splitvideo();
+	void RestRE();
 protected:
 //	void closeEvent(QCloseEvent *event) override;
 

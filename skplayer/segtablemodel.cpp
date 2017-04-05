@@ -97,3 +97,7 @@ bool SegTableModel::setData(const QModelIndex & index, const QVariant & value, i
 	}
 	return false;
 }
+void SegTableModel::reflesh(int row)
+{
+	emit dataChanged(index(row, 0), index(row, 2));
+}
