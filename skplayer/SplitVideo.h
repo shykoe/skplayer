@@ -29,6 +29,10 @@ public:
 		static SplitVideo spv;
 		return &spv;
 	}
+	static SplitVideo* Get2() {
+		static SplitVideo spv2;
+		return &spv2;
+	}
 	/*
 	init for extract cv::mat
 	*/

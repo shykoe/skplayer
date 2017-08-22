@@ -62,6 +62,7 @@ skplayer::skplayer(QWidget *parent)
 	connect(ui.AnalysisBt, SIGNAL(clicked()), this, SLOT(AnalysisMsg()));
 	connect(ui.ModelButton, SIGNAL(clicked()), this, SLOT(SetModelFile()));
 	connect(ui.MeanButton, SIGNAL(clicked()), this, SLOT(SetMeanFile()));
+	connect(ui.ProtoButton, SIGNAL(clicked()), this, SLOT(SetProtoFile()));
 	connect(ui.OutputDir, SIGNAL(clicked()), this, SLOT(SetOutputFile()));
 	connect(toPlay, &QAction::triggered, this, &skplayer::toPlay);
 	connect(ui.SplitBt, SIGNAL(clicked()), this, SLOT(splitvideo()));
@@ -80,6 +81,7 @@ void skplayer::openFile(QString name)
 	this->setWindowTitle(name);
 	int totalMs = sffmpeg::Get()->Open(name.toLocal8Bit());
 	SplitVideo::Get()->OpenSource(name.toStdString());
+	SplitVideo::Get2()->OpenSource(name.toStdString());
 	ui.suffixName->setText(QString(".") + QString::fromStdString(SplitVideo::Get()->suffixName));
 
 	if (totalMs <= 0)
@@ -360,7 +362,7 @@ void skplayer::splitvideo()
 		ui.StartTm->setText(QString::number(starttm, 10));
 		ui.EndTm->setText(QString::number(endtm, 10));
 	}
-	if (!SplitVideo::Get()->isopen)
+	if (!SplitVideo::Get2()->isopen)
 	{
 		ui.LogText->append(QString::fromLocal8Bit("视频文件没有打开"));
 		return;
@@ -384,9 +386,9 @@ void skplayer::splitvideo()
 		ui.LogText->append(QString::fromLocal8Bit("输出文件名错误"));
 		return;
 	}
-	std::string FileName = ui.FileName->text().toStdString() + "." + SplitVideo::Get()->suffixName;
+	std::string FileName = ui.FileName->text().toStdString() + "." + SplitVideo::Get2()->suffixName;
 	ui.LogText->append(QString::fromLocal8Bit("分割视频 从%1 Sec 到 %2 Sec 输出 %3").arg(start).arg(end).arg(QString::fromStdString(FileName)) );
-	SplitVideo::Get()->Split(start, end, FileName);
+	SplitVideo::Get2()->Split(start, end, FileName);
 }
 void skplayer::RestRE()
 {

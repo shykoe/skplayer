@@ -29,8 +29,9 @@ int sffmpeg::Open(const char * path)
 		avformat_close_input(&ic);
 		return 0;
 	}
+	avformat_find_stream_info(ic, 0);
 	totalMs = ic->duration / AV_TIME_BASE * 1000;
-
+	
 	for (int i = 0; i < ic->nb_streams; i++)
 	{
 		AVCodecParameters* enc = ic->streams[i]->codecpar;

@@ -58,12 +58,13 @@ public:
     QLineEdit *FileName;
     QLabel *ScoreLb_4;
     QLabel *suffixName;
+    QLabel *label;
 
     void setupUi(QWidget *skplayerClass)
     {
         if (skplayerClass->objectName().isEmpty())
             skplayerClass->setObjectName(QStringLiteral("skplayerClass"));
-        skplayerClass->resize(1125, 896);
+        skplayerClass->resize(1135, 903);
         QIcon icon;
         icon.addFile(QStringLiteral(":/skplayer/Resources/play_128px_1194928_easyicon.net.ico"), QSize(), QIcon::Normal, QIcon::Off);
         skplayerClass->setWindowIcon(icon);
@@ -108,10 +109,10 @@ public:
         MeanEdit->setGeometry(QRect(80, 730, 401, 21));
         ModelButton = new QPushButton(skplayerClass);
         ModelButton->setObjectName(QStringLiteral("ModelButton"));
-        ModelButton->setGeometry(QRect(510, 670, 81, 21));
+        ModelButton->setGeometry(QRect(500, 660, 91, 31));
         AnalysisBt = new QPushButton(skplayerClass);
         AnalysisBt->setObjectName(QStringLiteral("AnalysisBt"));
-        AnalysisBt->setGeometry(QRect(510, 790, 71, 31));
+        AnalysisBt->setGeometry(QRect(510, 780, 71, 41));
         ScoreIp = new QLineEdit(skplayerClass);
         ScoreIp->setObjectName(QStringLiteral("ScoreIp"));
         ScoreIp->setGeometry(QRect(430, 790, 51, 21));
@@ -120,28 +121,28 @@ public:
         ProtoEdit->setGeometry(QRect(80, 700, 401, 21));
         OutputDir = new QPushButton(skplayerClass);
         OutputDir->setObjectName(QStringLiteral("OutputDir"));
-        OutputDir->setGeometry(QRect(510, 760, 81, 21));
+        OutputDir->setGeometry(QRect(500, 750, 91, 31));
         InitCaffe = new QPushButton(skplayerClass);
         InitCaffe->setObjectName(QStringLiteral("InitCaffe"));
-        InitCaffe->setGeometry(QRect(90, 790, 71, 31));
+        InitCaffe->setGeometry(QRect(90, 790, 81, 31));
         ProtoButton = new QPushButton(skplayerClass);
         ProtoButton->setObjectName(QStringLiteral("ProtoButton"));
-        ProtoButton->setGeometry(QRect(510, 700, 81, 21));
+        ProtoButton->setGeometry(QRect(500, 690, 91, 31));
         OutputDirEdit = new QLineEdit(skplayerClass);
         OutputDirEdit->setObjectName(QStringLiteral("OutputDirEdit"));
         OutputDirEdit->setGeometry(QRect(80, 760, 401, 21));
         MeanButton = new QPushButton(skplayerClass);
         MeanButton->setObjectName(QStringLiteral("MeanButton"));
-        MeanButton->setGeometry(QRect(510, 730, 81, 21));
+        MeanButton->setGeometry(QRect(500, 720, 91, 31));
         Seginfo = new QTableView(skplayerClass);
         Seginfo->setObjectName(QStringLiteral("Seginfo"));
-        Seginfo->setGeometry(QRect(800, 0, 321, 601));
+        Seginfo->setGeometry(QRect(800, 0, 331, 601));
         LogText = new QTextEdit(skplayerClass);
         LogText->setObjectName(QStringLiteral("LogText"));
-        LogText->setGeometry(QRect(590, 600, 531, 291));
+        LogText->setGeometry(QRect(590, 600, 541, 291));
         SplitBt = new QPushButton(skplayerClass);
         SplitBt->setObjectName(QStringLiteral("SplitBt"));
-        SplitBt->setGeometry(QRect(90, 830, 71, 31));
+        SplitBt->setGeometry(QRect(90, 830, 81, 41));
         StartTm = new QLineEdit(skplayerClass);
         StartTm->setObjectName(QStringLiteral("StartTm"));
         StartTm->setGeometry(QRect(220, 840, 51, 21));
@@ -156,7 +157,7 @@ public:
         ScoreLb_3->setGeometry(QRect(290, 840, 41, 21));
         ResetSE = new QPushButton(skplayerClass);
         ResetSE->setObjectName(QStringLiteral("ResetSE"));
-        ResetSE->setGeometry(QRect(400, 840, 81, 21));
+        ResetSE->setGeometry(QRect(400, 840, 91, 31));
         FileName = new QLineEdit(skplayerClass);
         FileName->setObjectName(QStringLiteral("FileName"));
         FileName->setGeometry(QRect(230, 870, 91, 21));
@@ -166,6 +167,14 @@ public:
         suffixName = new QLabel(skplayerClass);
         suffixName->setObjectName(QStringLiteral("suffixName"));
         suffixName->setGeometry(QRect(330, 870, 51, 21));
+        label = new QLabel(skplayerClass);
+        label->setObjectName(QStringLiteral("label"));
+        label->setGeometry(QRect(210, 620, 171, 41));
+        QFont font;
+        font.setFamily(QStringLiteral("Agency FB"));
+        font.setPointSize(16);
+        label->setFont(font);
+        label->setTextFormat(Qt::AutoText);
 
         retranslateUi(skplayerClass);
         QObject::connect(openButton, SIGNAL(clicked()), skplayerClass, SLOT(open()));
@@ -197,6 +206,7 @@ public:
         ResetSE->setText(QApplication::translate("skplayerClass", "\344\275\277\347\224\250\350\276\223\345\205\245\346\227\266\351\227\264", Q_NULLPTR));
         ScoreLb_4->setText(QApplication::translate("skplayerClass", "\346\226\207\344\273\266\345\220\215\347\247\260", Q_NULLPTR));
         suffixName->setText(QString());
+        label->setText(QApplication::translate("skplayerClass", "\345\234\272\346\231\257\347\261\273\345\236\213:\344\270\273\346\214\201\344\272\272", Q_NULLPTR));
     } // retranslateUi
 
 };

@@ -30,7 +30,7 @@ void VideoThread::run()
 		AVPacket pkt = sffmpeg::Get()->Read();
 		if (pkt.size <= 0)
 		{
-			msleep(10);
+			msleep(1);
 			continue;
 		}
 		if (pkt.stream_index == sffmpeg::Get()->GetAudioStream())

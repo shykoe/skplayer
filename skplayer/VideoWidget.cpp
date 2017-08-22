@@ -20,7 +20,6 @@ void VideoWidget::paintEvent(QPaintEvent *e)
 	static QImage *image = NULL;
 	static int w = 0;
 	static int h = 0;
-	int test = 3;
 	if (w != width() || h != height())
 	{
 		if (image)
